@@ -12,7 +12,6 @@ config.output.chunkFilename = "js/[name].[hash].js"
 //打包api 替换
 config.module.rules=(config.module.rules || []).concat([
     {
-        // index.html script脚本引入
         test: path.resolve(__dirname, '../src/index.html'),
         loader: 'webpack-dll-loader',
         exclude: "/node_modules/",
