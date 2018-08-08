@@ -1,0 +1,51 @@
+{
+  "name": "webpack4-vue2",
+  "version": "0.0.1",
+  "description": "zane project",
+  "main": "main.js",
+  "scripts": {
+    "dev": "cross-env PROT=8000 node build/webpack.dev.config.js",
+    "test": "webpack --progress --hide-modules --colors --config build/webpack.test.config.js",
+    "test:dll": "cross-env BUILD_TYPE=test webpack --progress --config build/webpack.dll.config.js",
+    "build": "webpack --progress --colors --config build/webpack.product.config.js",
+    "build:dll": "cross-env BUILD_TYPE=build webpack --progress --config build/webpack.dll.config.js"
+  },
+  "author": "wanwei",
+  "license": "MIT",
+  "engines": {
+    "node": ">=7.0",
+    "npm": ">=3.0"
+  },
+  "dependencies": {
+    "axios": "^0.18.0",
+    "vue": "^2.5.17",
+    "vue-loader": "^15.3.0",
+    "vue-router": "^3.0.1",
+    "vuex": "^3.0.1",
+    "webpack": "^4.16.5",
+    "webpack-cli": "^3.1.0"
+  },
+  "devDependencies": {
+    "accounting": "^0.4.1",
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.5",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "clean-webpack-plugin": "^0.1.19",
+    "cross-env": "^5.2.0",
+    "css-loader": "^1.0.0",
+    "file-loader": "^1.1.11",
+    "html-webpack-plugin": "^3.2.0",
+    "node-sass": "^4.9.2",
+    "open-browser-webpack-plugin": "^0.0.5",
+    "postcss-loader": "^2.1.6",
+    "sass-loader": "^7.1.0",
+    "string-replace-loader": "^2.1.1",
+    "url-loader": "^1.0.1",
+    "vue-style-loader": "^4.1.1",
+    "vue-template-compiler": "^2.5.17",
+    "webpack-dashboard": "^2.0.0",
+    "webpack-dev-server": "^3.1.5",
+    "webpack-merge": "^4.1.4"
+  }
+}
