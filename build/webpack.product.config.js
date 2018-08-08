@@ -3,10 +3,8 @@ const webpack                   = require('webpack')
 const config                    = require('./webpack.base.config')
 const path                      = require("path");
 const CleanPlugin               = require('clean-webpack-plugin');
-const ParallelUglifyPlugin      = require('webpack-parallel-uglify-plugin')
 
 
-config.mode = 'production'
 config.output.path=path.resolve(__dirname, '../dist/production');
 config.output.filename = 'js/[name].[hash].js',
 config.output.chunkFilename = "js/[name].[hash].js"
@@ -24,8 +22,6 @@ config.module.rules=(config.module.rules || []).concat([
         }
     },
 ])
-
-config.devtool = false;
 
 config.optimization={
     splitChunks: {
@@ -62,22 +58,6 @@ config.optimization={
 
 config.plugins = (config.plugins || []).concat([
     new CleanPlugin(path.resolve(__dirname, '../dist/production')),
-
-    // 多线程压缩
-    new ParallelUglifyPlugin({
-        // 支持es6打包
-        uglifyES: {
-            output: {
-                comments: false
-            },
-            compress: {
-                warnings: false
-            }
-        }
-    }),
-
-    new webpack.optimize.OccurrenceOrderPlugin(),
-    new webpack.optimize.ModuleConcatenationPlugin(),
 ])
 
 

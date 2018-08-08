@@ -6,10 +6,38 @@ const path                  = require("path")
 const HtmlWebpackPlugin     = require('html-webpack-plugin')
 const VueLoaderPlugin       = require('vue-loader/lib/plugin')
 const MiniCssExtractPlugin  = require("mini-css-extract-plugin")
+const ParallelUglifyPlugin  = require('webpack-parallel-uglify-plugin')
+const ProgressBarPlugin     = require('progress-bar-webpack-plugin')
+const chalk                 = require('chalk')
+const isDev                 = !!(process.env.NODE_ENV != 'production');
+
+
+const pluginsConfigs =isDev?[]:[
+    new MiniCssExtractPlugin({
+        filename: 'css/[name].css',
+        chunkFilename: 'css/[contenthash:12].css'
+    }),
+    new ParallelUglifyPlugin({
+        uglifyES: {
+            output: {
+                comments: false
+            },
+            compress: {
+                warnings: false
+            }
+        }
+    }),
+    new webpack.optimize.OccurrenceOrderPlugin(),
+    new webpack.optimize.ModuleConcatenationPlugin(),
+    new ProgressBarPlugin({
+        format: chalk.blue.bold("build  ") + chalk.cyan("[:bar]") + chalk.green.bold(':percent') + ' (' + chalk.magenta(":elapsed") + ' seconds) ',
+        clear: false
+    }),
+]
 
 module.exports = {
-    mode:'development',
-    devtool: 'inline-source-map',
+    mode:isDev?'development':'production',
+    devtool: isDev?'inline-source-map':false,
     entry:{
         main:[
             'babel-polyfill',
@@ -38,23 +66,28 @@ module.exports = {
             },
             {
                 test:/\.css$/, 
-                use:[ MiniCssExtractPlugin.loader,'vue-style-loader', 'css-loader']
+                exclude:/node_modules/,
+                use:isDev?['vue-style-loader', 'css-loader']:[ MiniCssExtractPlugin.loader,'vue-style-loader', 'css-loader']
             },
             {
                 test: /\.scss$/,
+                exclude:/node_modules/,
                 use: ["vue-style-loader","css-loader","sass-loader"]
             },
             {
                 test: /\.(png|jpg|gif)$/,
+                exclude:/node_modules/,
                 loader: 'url-loader?limit=8192&name=img/[name].[ext]?[hash]'
             },
             {
-            　　test: /\.(woff|woff2|eot|ttf|svg)(\?.*$|$)/,
-            　　loader: 'url-loader?importLoaders=1&limit=1000&name=fonts/[name].[ext]'
+            　　 test: /\.(woff|woff2|eot|ttf|svg)(\?.*$|$)/,
+                exclude:/node_modules/,
+            　　 loader: 'url-loader?importLoaders=1&limit=1000&name=fonts/[name].[ext]'
         　　 },
             {
-            　　test: /\.(xlsx|xls)(\?.*$|$)/,
-            　　loader: 'url-loader?importLoaders=1&limit=8192&name=files/[name].[ext]'
+            　　 test: /\.(xlsx|xls)(\?.*$|$)/,
+                exclude:/node_modules/,
+            　　 loader: 'url-loader?importLoaders=1&limit=8192&name=files/[name].[ext]'
         　　 },
         ],
         noParse: function(content) {
@@ -74,10 +107,7 @@ module.exports = {
         },
     },
     plugins:[
-        new MiniCssExtractPlugin({
-            filename: 'css/[name].css',
-            chunkFilename: 'css/[contenthash:12].css'
-        }),
+        ...pluginsConfigs,
         new VueLoaderPlugin(),
         new HtmlWebpackPlugin({
             title:'首页',
