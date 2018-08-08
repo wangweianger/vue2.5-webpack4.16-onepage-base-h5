@@ -69,7 +69,7 @@ module.exports = {
             {
             　　test: /\.(xlsx|xls)(\?.*$|$)/,
             　　loader: 'url-loader?importLoaders=1&limit=8192&name=files/[name].[ext]'
-        　　},
+        　　 },
         ],
         noParse: function(content) {
             return /jquery|lodash/.test(content);

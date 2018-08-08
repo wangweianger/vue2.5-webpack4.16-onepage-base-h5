@@ -1,10 +1,9 @@
-//生产环境
-var webpack               = require('webpack')
-var config                = require('./webpack.base.config')
-var path                  = require("path");
-var StringReplacePlugin   = require("string-replace-webpack-plugin");
-var CleanPlugin           = require('clean-webpack-plugin');
-
+//测试环境
+const webpack               	= require('webpack')
+const config                	= require('./webpack.base.config')
+const path                  	= require("path");
+const CleanPlugin           	= require('clean-webpack-plugin');
+const ParallelUglifyPlugin 		= require('webpack-parallel-uglify-plugin');
 
 //生成测试环境目录
 
@@ -12,36 +11,40 @@ config.mode = 'production'
 config.output.path=path.resolve(__dirname, '../dist/test');
 
 //打包api 替换
-// config.module.loaders=(config.module.loaders || []).concat([
-//   { 
-//     test: path.resolve(__dirname, '../src/assets/common/js/config.js'),
-//     loader: StringReplacePlugin.replace({
-//         replacements: [
-//             {
-//                 pattern: /127.0.0.1:5000/g,
-//                 replacement: function (match, p1, offset) {
-//                     return 'test.oms.morning-star.cn';
-//                 }
-//             },
-//             {
-//                 pattern: /127.0.0.1:4000/g,
-//                 replacement: function (match, p1, offset) {
-//                     return 'test.venus.morning-star.cn';
-//                 }
-//             }
-//         ]
-//     })
-//   }
-// ])
+config.module.rules=(config.module.rules || []).concat([
+  	{
+        test: path.resolve(__dirname, '../src/assets/common/js/configs.js'),
+        loader: 'string-replace-loader',
+        exclude: "/node_modules/",
+        query: {
+            multiple: [
+                { search: /123456/, replace: '987654321' },
+            ]
+        }
+    },
+])
 
 config.devtool = '#source-map';
 
-// config.plugins = (config.plugins || []).concat([
-//   // 清除上一次生成的文件
-//   new CleanPlugin(path.resolve(__dirname, '../dist/test')),
-//   //string替换
-//   new StringReplacePlugin(),
-// ])
+config.plugins = (config.plugins || []).concat([
+  	new CleanPlugin(path.resolve(__dirname, '../dist/test')),
+
+  	// 多线程压缩
+    new ParallelUglifyPlugin({
+        // 支持es6打包
+        uglifyES: {
+            output: {
+                comments: false
+            },
+            compress: {
+                warnings: false
+            }
+        }
+    }),
+
+  	new webpack.optimize.OccurrenceOrderPlugin(),
+    new webpack.optimize.ModuleConcatenationPlugin(),
+])
 
 
 module.exports = config

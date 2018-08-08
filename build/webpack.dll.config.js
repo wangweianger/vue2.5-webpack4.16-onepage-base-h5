@@ -5,17 +5,13 @@ const buildDir = process.env.BUILD_TYPE == 'build'?'production':'test'
 const distpath = `../dist/${buildDir}/libs`
 
 module.exports = {
-    // 你想要打包的模块的数组
+    mode:'production',
+    devtool: false,
     entry: {
         vendor: [
             'vue',
             'vuex',
             'vue-router',
-            'jquery', 
-            'zane-calendar',
-            'common/js/format',
-            'popup',
-            'common/lib/mixin/propsync',
             'accounting',
         ]
     },
@@ -27,8 +23,22 @@ module.exports = {
     module: {
         rules: [
             {
+                test: /\.scss$/,
+                use: ["vue-style-loader","css-loader","sass-loader"]
+            },
+            {
                 test:/\.css$/, 
-                loader: 'css-loader'
+                use:[ 'vue-style-loader', 'css-loader']
+            },
+            {
+                test: /\.js$/,
+                exclude: file => (/node_modules/.test(file) && !/\.vue\.js/.test(file)),
+                use: {
+                    loader: 'babel-loader',
+                    options: {
+                        presets: ['env']
+                    }
+                }
             },
             {
                 test: /\.(png|jpg|gif)$/,
@@ -38,14 +48,6 @@ module.exports = {
             　　test: /\.(woff|woff2|eot|ttf|svg)(\?.*$|$)/,
             　　loader: 'url-loader?importLoaders=1&limit=1000&name=fonts/[name].[ext]'
         　　 },
-            {
-                test: /\.js$/,
-                exclude: /node_modules|vue\/dist/,
-                loader: 'babel-loader',
-                options: {
-                    presets: [ 'env' ],
-                }
-            }, 
         ]
     },
     //自动补全识别后缀
@@ -56,10 +58,6 @@ module.exports = {
             components: path.resolve(__dirname, '../src/components'),
             commonvue: path.resolve(__dirname, '../src/commonvue'),
             pages: path.resolve(__dirname, '../src/pages'),
-            common: path.resolve(__dirname, '../src/assets/common'),
-            assets:path.resolve(__dirname, '../src/assets'),
-            popup: path.resolve(__dirname, '../src/assets/common/lib/popup/popup.js'),
-            page: path.resolve(__dirname, '../src/assets/common/lib/page/page.js'),
         },
     },
     plugins: [
@@ -74,17 +72,7 @@ module.exports = {
             name: '[name]_[hash]', 
             context:path.join(__dirname, distpath), 
         }),
-        // 压缩打包的文件，与该文章主线无关
-        new webpack.optimize.UglifyJsPlugin({
-            compress: {
-                warnings: false
-            }
-        }),
-        new webpack.DefinePlugin({
-            'process.env': {
-                NODE_ENV: '"production"'
-            }
-        }),
+        
         new webpack.optimize.OccurrenceOrderPlugin(),
         new webpack.optimize.ModuleConcatenationPlugin(),
     ]
