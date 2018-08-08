@@ -87,8 +87,8 @@ module.exports = {
             inject: true,
             hash: true,
             cache: true,
-            chunks: 'all',
-            chunksSortMode: 'manual',
+            // chunks: 'all',
+            // chunksSortMode: 'manual',
             favicon:path.resolve(__dirname, '../favicon.ico'),
         }),
     ]
