@@ -1,5 +1,7 @@
-/* author:zane
-** time:2018-08-08*/
+/* 
+* @author:wangwei
+* @time:2018-08-08
+*/
 const webpack               = require('webpack')
 const path                  = require("path")
 const HtmlWebpackPlugin     = require('html-webpack-plugin')

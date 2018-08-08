@@ -31,12 +31,21 @@ npm install
 npm run dev 
 ```
 
-4.打包生产文件  打生产报需要构建一次 dll 命令：即经常不会改动的文件
+4.打包生产文件   打生产包需要构建一次 dll 命令：即经常不会改动的文件
 
 ```
-npm run build:dll   //此命令一般只运行一次 若后期依赖项目有改动才运行
 
-npm run build  //每次生产包运行
+测试包：
+
+npm run test:dll
+
+npm run rest
+
+正式包：
+
+npm run build:dll   
+
+npm run build  
 
 ``` 
 

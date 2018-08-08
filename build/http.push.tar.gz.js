@@ -1,14 +1,13 @@
 /**
  * @author wangwei
- * @since 17/4/1
+ * @since 20117/04/01
  */
-
 var httpPushTarGz=require('./http.push.js')
 var path = require('path');
 
 /*--------------发布代码配置-------------------*/
 new httpPushTarGz({
-    receiver  : 'http://zane.morning-star.cn/http-push-test/receiver',
+    receiver  : 'http://www.xxx.cn/http-push-test/receiver',
     distDir   : path.resolve(__dirname, '../dist/targz'),  //生成tar.gz包的文件夹
     proDir    : path.resolve(__dirname, '../dist/production'), //上传的目标文件夹
     copyDir   : path.resolve(__dirname, '../dist/pt-agent'), //复制的目标文件夹

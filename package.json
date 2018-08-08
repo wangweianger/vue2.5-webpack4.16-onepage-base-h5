@@ -8,7 +8,8 @@
     "test": "cross-env NODE_ENV=production webpack --progress --hide-modules --colors --config build/webpack.test.config.js",
     "test:dll": "cross-env BUILD_TYPE=test webpack --progress --config build/webpack.dll.config.js",
     "build": "cross-env NODE_ENV=production webpack --progress --colors --config build/webpack.product.config.js",
-    "build:dll": "cross-env BUILD_TYPE=build webpack --progress --config build/webpack.dll.config.js"
+    "build:dll": "cross-env BUILD_TYPE=build webpack --progress --config build/webpack.dll.config.js",
+    "test-build": "npm run build && node ./build/http.push.tar.gz.js"
   },
   "author": "wanwei",
   "license": "MIT",
