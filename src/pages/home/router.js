@@ -5,5 +5,5 @@ module.exports = [{
 	meta: {
 		title: '首页',
 	},
-	component: require('./home.vue').default
+	component: resolve => require(['./home.vue'], resolve)
 }, ]
