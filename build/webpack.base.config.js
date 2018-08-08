@@ -5,6 +5,7 @@ const webpack               = require('webpack')
 const path                  = require("path")
 const HtmlWebpackPlugin     = require('html-webpack-plugin')
 const VueLoaderPlugin       = require('vue-loader/lib/plugin')
+const MiniCssExtractPlugin  = require("mini-css-extract-plugin")
 
 module.exports = {
     mode:'development',
@@ -39,24 +40,11 @@ module.exports = {
             },
             {
                 test:/\.css$/, 
-                use:[ 'vue-style-loader', 'css-loader']
+                use:[ MiniCssExtractPlugin.loader,'vue-style-loader', 'css-loader']
             },
             {
                 test: /\.scss$/,
                 use: ["vue-style-loader","css-loader","sass-loader"]
-            },
-            {
-                test: /\.sass$/,
-                use: [
-                'vue-style-loader',
-                'css-loader',
-                    {
-                        loader: 'sass-loader',
-                        options: {
-                            indentedSyntax: true
-                        }
-                    }
-                ]
             },
             {
                 test: /\.(png|jpg|gif)$/,
@@ -87,39 +75,11 @@ module.exports = {
             pages: path.resolve(__dirname, '../src/pages'),
         },
     },
-    optimization:{
-        splitChunks: {
-            chunks: "all",
-            minSize: 30000,
-            minChunks: 1,
-            cacheGroups: {
-                commons: {
-                    name: "commons",
-                    chunks: "all",
-                    minChunks: 2
-                },
-                vendors: {
-                    test: /[\\/]node_modules[\\/]/,
-                    chunks: 'all',
-                    name: 'vendors',
-                    priority: 10,
-                    enforce: true
-                },
-                styles: {
-                    name: 'styles',
-                    test: /\.(scss|css)$/,
-                    chunks: 'all',
-                    minChunks: 1,
-                    reuseExistingChunk: true,
-                    enforce: true
-                }
-            }
-        },
-        runtimeChunk: {
-            name: 'manifest'
-        }
-    },
     plugins:[
+        new MiniCssExtractPlugin({
+            filename: 'css/[name].css',
+            chunkFilename: 'css/[contenthash:12].css'
+        }),
         new VueLoaderPlugin(),
         new HtmlWebpackPlugin({
             title:'首页',
@@ -127,7 +87,7 @@ module.exports = {
             inject: true,
             hash: true,
             cache: true,
-            chunks: ['manifest','vendors','main'],
+            chunks: 'all',
             chunksSortMode: 'manual',
             favicon:path.resolve(__dirname, '../favicon.ico'),
         }),

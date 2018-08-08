@@ -28,6 +28,39 @@ config.module.rules=(config.module.rules || []).concat([
 
 config.devtool = false;
 
+config.optimization={
+    splitChunks: {
+        chunks: "all",
+        minSize: 30000,
+        minChunks: 1,
+        cacheGroups: {
+            commons: {
+                name: "commons",
+                chunks: "all",
+                minChunks: 2
+            },
+            vendors: {
+                test: /[\\/]node_modules[\\/]/,
+                chunks: 'all',
+                name: 'vendors',
+                priority: 10,
+                enforce: true
+            },
+            styles: {
+                name: 'styles',
+                test: /\.(scss|css)$/,
+                chunks: 'all',
+                minChunks: 1,
+                reuseExistingChunk: true,
+                enforce: true
+            }
+        }
+    },
+    runtimeChunk: {
+        name: 'manifest'
+    }
+}
+
 config.plugins = (config.plugins || []).concat([
     new CleanPlugin(path.resolve(__dirname, '../dist/production')),
 

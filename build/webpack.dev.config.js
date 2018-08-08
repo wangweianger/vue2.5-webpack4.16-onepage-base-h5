@@ -11,7 +11,9 @@ config.entry.main = (config.entry.main || []).concat([
     `webpack-dev-server/client?http://localhost:${PROT}/`,
     "webpack/hot/dev-server",
 ])
+
 config.plugins = (config.plugins || []).concat([
+    new DashboardPlugin(),
     new webpack.HotModuleReplacementPlugin(),
     new OpenBrowserPlugin({ url: `http://127.0.0.1:${PROT}` })
 ])
