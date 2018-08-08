@@ -1,14 +1,19 @@
-const path = require("path");
-const webpack = require("webpack");
-const CleanWebpackPlugin = require('clean-webpack-plugin');
-const buildDir = process.env.BUILD_TYPE == 'build'?'production':'test'
-const distpath = `../dist/${buildDir}/libs`
+const path                  = require("path");
+const webpack               = require("webpack");
+const CleanWebpackPlugin    = require('clean-webpack-plugin');
+const ParallelUglifyPlugin  = require('webpack-parallel-uglify-plugin')
+const ProgressBarPlugin     = require('progress-bar-webpack-plugin')
+const chalk                 = require('chalk')
+const isDev                 = !!(process.env.NODE_ENV != 'production')
+
+const buildDir              = process.env.BUILD_TYPE == 'build'?'production':'test'
+const distpath              = `../dist/${buildDir}/libs`
 
 module.exports = {
     mode:'production',
     devtool: false,
     entry: {
-        vendor: [
+        libs: [
             'vue',
             'vuex',
             'vue-router',
@@ -73,8 +78,22 @@ module.exports = {
             context:path.join(__dirname, distpath), 
         }),
         
+        new ParallelUglifyPlugin({
+            uglifyES: {
+                output: {
+                    comments: false
+                },
+                compress: {
+                    warnings: false
+                }
+            }
+        }),
         new webpack.optimize.OccurrenceOrderPlugin(),
-        new webpack.optimize.ModuleConcatenationPlugin()
+        new webpack.optimize.ModuleConcatenationPlugin(),
+        new ProgressBarPlugin({
+            format: chalk.blue.bold("build  ") + chalk.cyan("[:bar]") + chalk.green.bold(':percent') + ' (' + chalk.magenta(":elapsed") + ' seconds) ',
+            clear: false
+        }),
     ]
 };
 

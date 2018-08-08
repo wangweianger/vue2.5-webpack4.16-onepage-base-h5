@@ -1,6 +1,5 @@
 /* author:zane
-** time:2018-08-08
-*/
+** time:2018-08-08*/
 const webpack               = require('webpack')
 const path                  = require("path")
 const HtmlWebpackPlugin     = require('html-webpack-plugin')
@@ -9,9 +8,14 @@ const MiniCssExtractPlugin  = require("mini-css-extract-plugin")
 const ParallelUglifyPlugin  = require('webpack-parallel-uglify-plugin')
 const ProgressBarPlugin     = require('progress-bar-webpack-plugin')
 const chalk                 = require('chalk')
-const isDev                 = !!(process.env.NODE_ENV != 'production');
+const isDev                 = !!(process.env.NODE_ENV != 'production')
 
+// 多线程
+const HappyPack             = require('happypack');
+const os                    = require('os');
+const happyThreadPool       = HappyPack.ThreadPool({ size: os.cpus().length });
 
+// 生产环境使用
 const pluginsConfigs =isDev?[]:[
     new MiniCssExtractPlugin({
         filename: 'css/[name].css',
@@ -54,15 +58,12 @@ module.exports = {
         rules:[
             {
                 test: /\.vue$/,
-                loader: 'vue-loader'
+                use:{ loader:'vue-loader' },
             },
             {
                 test: /\.js$/,
                 exclude: file => (/node_modules/.test(file) && !/\.vue\.js/.test(file)),
-                use: {
-                    loader: 'babel-loader',
-                    options: {presets: ['env']}
-                }
+                use: ['happypack/loader?id=js'],
             },
             {
                 test:/\.css$/, 
@@ -107,6 +108,16 @@ module.exports = {
         },
     },
     plugins:[
+        new HappyPack({
+            id: 'js',
+            threadPool: happyThreadPool,
+            loaders: [{
+                loader: 'babel-loader',
+                options: {
+                    presets: [ 'env' ],
+                }
+            }],
+        }),
         ...pluginsConfigs,
         new VueLoaderPlugin(),
         new HtmlWebpackPlugin({

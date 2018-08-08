@@ -12,6 +12,16 @@ config.output.chunkFilename = "js/[name].[hash].js"
 //打包api 替换
 config.module.rules=(config.module.rules || []).concat([
     {
+        // index.html script脚本引入
+        test: path.resolve(__dirname, '../src/index.html'),
+        loader: 'webpack-dll-loader',
+        exclude: "/node_modules/",
+        options:{
+            publicPath:'/libs/',
+            manifest:path.resolve(__dirname, '../dist/production/libs/libs-manifest.json')
+        }
+    },
+    {
         test: path.resolve(__dirname, '../src/assets/common/js/configs.js'),
         loader: 'string-replace-loader',
         exclude: "/node_modules/",
@@ -58,6 +68,12 @@ config.optimization={
 
 config.plugins = (config.plugins || []).concat([
     new CleanPlugin(path.resolve(__dirname, '../dist/production')),
+
+    // 增加DllReferencePlugin配置
+    new webpack.DllReferencePlugin({
+        context:path.join(__dirname, '../dist/production/libs'), 
+        manifest: require("../dist/production/libs/libs-manifest.json")
+    }),
 ])
 
 
