@@ -40,3 +40,6 @@ npm run build  //每次生产包运行
 
 ``` 
 
+5.图片
+![输入图片说明](https://github.com/wangweianger/vue2.5-webpack4.16-onepage-base-h5/blob/master/demo/demo01.png "在这里输入图片标题")
+
