@@ -74,7 +74,7 @@ module.exports = {
         }),
         
         new webpack.optimize.OccurrenceOrderPlugin(),
-        new webpack.optimize.ModuleConcatenationPlugin(),
+        new webpack.optimize.ModuleConcatenationPlugin()
     ]
 };
 

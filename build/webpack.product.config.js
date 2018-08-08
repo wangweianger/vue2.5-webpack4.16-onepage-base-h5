@@ -3,9 +3,8 @@ const webpack                   = require('webpack')
 const config                    = require('./webpack.base.config')
 const path                      = require("path");
 const CleanPlugin               = require('clean-webpack-plugin');
-const ParallelUglifyPlugin      = require('webpack-parallel-uglify-plugin');
+const ParallelUglifyPlugin      = require('webpack-parallel-uglify-plugin')
 
-//生成测试环境目录
 
 config.mode = 'production'
 config.output.path=path.resolve(__dirname, '../dist/production');

@@ -28,10 +28,8 @@ config.devtool = '#source-map';
 
 config.plugins = (config.plugins || []).concat([
   	new CleanPlugin(path.resolve(__dirname, '../dist/test')),
-
-  	// 多线程压缩
+    
     new ParallelUglifyPlugin({
-        // 支持es6打包
         uglifyES: {
             output: {
                 comments: false
