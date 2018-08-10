@@ -4,9 +4,6 @@ const merge                 = require('webpack-merge')
 const config                = require('./webpack.base.config')
 const WebpackDevServer      = require('webpack-dev-server')
 const OpenBrowserPlugin     = require('open-browser-webpack-plugin');
-const Dashboard             = require('webpack-dashboard');
-const DashboardPlugin       = require('webpack-dashboard/plugin');
-const dashboard             = new Dashboard();
 const PROT                  = process.env.PROT || 8000
 
 config.entry.main = (config.entry.main || []).concat([   
@@ -15,7 +12,6 @@ config.entry.main = (config.entry.main || []).concat([
 ])
 
 config.plugins = (config.plugins || []).concat([
-    new DashboardPlugin(dashboard.setData),
     new webpack.HotModuleReplacementPlugin(),
     new OpenBrowserPlugin({ url: `http://127.0.0.1:${PROT}` })
 ])
@@ -25,8 +21,6 @@ const server = new WebpackDevServer(compiler, {
     hot: true,
     inline: true,
     open: true,
-    port:PROT,
-    quiet: true,
     watchOptions: {
         aggregateTimeout: 300,
         poll: 1000

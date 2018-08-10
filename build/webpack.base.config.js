@@ -12,11 +12,6 @@ const ProgressBarPlugin     = require('progress-bar-webpack-plugin')
 const chalk                 = require('chalk')
 const isDev                 = !!(process.env.NODE_ENV != 'production')
 
-// 多线程
-const HappyPack             = require('happypack');
-const os                    = require('os');
-const happyThreadPool       = HappyPack.ThreadPool({ size: os.cpus().length });
-
 // 生产环境使用
 const pluginsConfigs =isDev?[]:[
     new MiniCssExtractPlugin({
@@ -64,9 +59,7 @@ module.exports = {
             },
             {
                 test: /\.js$/,
-                exclude: file => (/node_modules/.test(file) && !/\.vue\.js/.test(file)),
                 use:[{loader: 'babel-loader',options: { presets: [ 'env' ] }}],
-                // use: ['happypack/loader?id=js'],
             },
             {
                 test:/\.css$/, 
@@ -75,17 +68,14 @@ module.exports = {
             },
             {
                 test: /\.scss$/,
-                exclude:/node_modules/,
                 use: ["vue-style-loader","css-loader","sass-loader"]
             },
             {
                 test: /\.(png|jpg|gif)$/,
-                exclude:/node_modules/,
                 loader: 'url-loader?limit=8192&name=img/[name].[ext]?[hash]'
             },
             {
             　　 test: /\.(woff|woff2|eot|ttf|svg)(\?.*$|$)/,
-                exclude:/node_modules/,
             　　 loader: 'url-loader?importLoaders=1&limit=1000&name=fonts/[name].[ext]'
         　　 },
             {
@@ -111,16 +101,6 @@ module.exports = {
         },
     },
     plugins:[
-        // new HappyPack({
-        //     id: 'js',
-        //     threadPool: happyThreadPool,
-        //     loaders: [{
-        //         loader: 'babel-loader',
-        //         options: {
-        //             presets: [ 'env' ],
-        //         }
-        //     }],
-        // }),
         ...pluginsConfigs,
         new VueLoaderPlugin(),
         new HtmlWebpackPlugin({
@@ -129,8 +109,6 @@ module.exports = {
             inject: true,
             hash: true,
             cache: true,
-            // chunks: 'all',
-            // chunksSortMode: 'manual',
             favicon:path.resolve(__dirname, '../favicon.ico'),
         }),
     ]

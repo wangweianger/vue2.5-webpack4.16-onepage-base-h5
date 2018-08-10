@@ -9,11 +9,11 @@
 
 <template>
 <div class="content">
-	<h1>Wlcome my vue project!</h1>
+	<h1>Wlcome my vue project! 000</h1>
 	<h2>small icon</h2>
 	<div><img src="./img/icon.png"></div>
 	<h2>beautiful girl!</h2>
-	<div><img src="./img/01.png"></div>
+	<div><img src="./img/01.png"></div> 
 </div>
 </template>
 
