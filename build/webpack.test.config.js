@@ -30,6 +30,14 @@ config.module.rules=(config.module.rules || []).concat([
             ]
         }
     },
+    {
+        test: /router\.js$/,
+        loader: 'vue-router-lazy-replace-loader',
+        exclude: "/node_modules/",
+        options: {
+            version: 'v1'
+        }
+    }
 ])
 
 config.devtool = 'inline-source-map';
