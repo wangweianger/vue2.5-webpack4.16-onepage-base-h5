@@ -45,26 +45,19 @@ config.module.rules=(config.module.rules || []).concat([
 config.optimization={
     splitChunks: {
         chunks: "all",
-        minSize: 30000,
-        minChunks: 1,
         cacheGroups: {
-            commons: {
-                name: "commons",
-                chunks: "all",
-                minChunks: 2
-            },
             vendors: {
                 test: /[\\/]node_modules[\\/]/,
-                chunks: 'all',
                 name: 'vendors',
                 priority: 10,
-                enforce: true
+                enforce: true,
+                chunks: "initial",
             },
             styles: {
                 name: 'styles',
                 test: /\.(scss|css)$/,
-                chunks: 'all',
-                minChunks: 1,
+                minChunks: 2,
+                priority: 20,
                 reuseExistingChunk: true,
                 enforce: true
             }
