@@ -3,6 +3,8 @@ const webpack                   = require('webpack')
 const config                    = require('./webpack.base.config')
 const path                      = require("path");
 const CleanPlugin               = require('clean-webpack-plugin');
+const SpeedMeasurePlugin        = require("speed-measure-webpack-plugin")
+const smp                       = new SpeedMeasurePlugin()
 
 
 config.output.path=path.resolve(__dirname, '../dist/production');
@@ -21,7 +23,7 @@ config.module.rules=(config.module.rules || []).concat([
         }
     },
     {
-        test: path.resolve(__dirname, '../src/assets/common/js/configs.js'),
+        test: path.resolve(__dirname, '../src/assets/common/js/config.js'),
         loader: 'string-replace-loader',
         exclude: "/node_modules/",
         query: {
@@ -30,6 +32,14 @@ config.module.rules=(config.module.rules || []).concat([
             ]
         }
     },
+    {
+        test: /router\.js$/,
+        loader: 'vue-router-lazy-replace-loader',
+        exclude: "/node_modules/",
+        options: {
+            version: 'v1'
+        }
+    }
 ])
 
 config.optimization={
@@ -76,7 +86,7 @@ config.plugins = (config.plugins || []).concat([
 ])
 
 
-module.exports = config
+module.exports = smp.wrap(config)
 
 
 

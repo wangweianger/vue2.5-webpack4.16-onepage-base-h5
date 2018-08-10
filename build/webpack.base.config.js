@@ -65,7 +65,8 @@ module.exports = {
             {
                 test: /\.js$/,
                 exclude: file => (/node_modules/.test(file) && !/\.vue\.js/.test(file)),
-                use: ['happypack/loader?id=js'],
+                use:[{loader: 'babel-loader',options: { presets: [ 'env' ] }}],
+                // use: ['happypack/loader?id=js'],
             },
             {
                 test:/\.css$/, 
@@ -110,16 +111,16 @@ module.exports = {
         },
     },
     plugins:[
-        new HappyPack({
-            id: 'js',
-            threadPool: happyThreadPool,
-            loaders: [{
-                loader: 'babel-loader',
-                options: {
-                    presets: [ 'env' ],
-                }
-            }],
-        }),
+        // new HappyPack({
+        //     id: 'js',
+        //     threadPool: happyThreadPool,
+        //     loaders: [{
+        //         loader: 'babel-loader',
+        //         options: {
+        //             presets: [ 'env' ],
+        //         }
+        //     }],
+        // }),
         ...pluginsConfigs,
         new VueLoaderPlugin(),
         new HtmlWebpackPlugin({

@@ -2,7 +2,9 @@
 const webpack               	= require('webpack')
 const config                	= require('./webpack.base.config')
 const path                  	= require("path");
-const CleanPlugin           	= require('clean-webpack-plugin');
+const CleanPlugin           	= require('clean-webpack-plugin')
+const SpeedMeasurePlugin        = require("speed-measure-webpack-plugin")
+const smp                       = new SpeedMeasurePlugin()
 
 
 config.output.path=path.resolve(__dirname, '../dist/test');
@@ -36,8 +38,7 @@ config.plugins = (config.plugins || []).concat([
   	new CleanPlugin(path.resolve(__dirname, '../dist/test')),
 ])
 
-
-module.exports = config
+module.exports = smp.wrap(config)
 
 
 
