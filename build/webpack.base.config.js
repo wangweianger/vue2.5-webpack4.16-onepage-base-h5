@@ -4,6 +4,7 @@
 */
 const webpack               = require('webpack')
 const path                  = require("path")
+const fs                    = require('fs')
 const HtmlWebpackPlugin     = require('html-webpack-plugin')
 const VueLoaderPlugin       = require('vue-loader/lib/plugin')
 const MiniCssExtractPlugin  = require("mini-css-extract-plugin")
@@ -11,6 +12,7 @@ const ParallelUglifyPlugin  = require('webpack-parallel-uglify-plugin')
 const ProgressBarPlugin     = require('progress-bar-webpack-plugin')
 const chalk                 = require('chalk')
 const isDev                 = !!(process.env.NODE_ENV != 'production')
+const CleanWebpackPlugin    = require('clean-webpack-plugin');
 
 // 多线程
 const HappyPack             = require('happypack');
@@ -19,17 +21,26 @@ const happyThreadPool       = HappyPack.ThreadPool({ size: os.cpus().length });
 
 // 生产环境使用
 const pluginsConfigs =isDev?[]:[
+    new CleanWebpackPlugin(['production/js'], {
+        root: path.resolve(__dirname, '../dist'),
+        verbose: true,
+        dry: false,
+    }),
     new MiniCssExtractPlugin({
         filename: 'css/[name].css',
         chunkFilename: 'css/[contenthash:12].css'
     }),
     new ParallelUglifyPlugin({
         uglifyES: {
-            output: {
-                comments: false
-            },
             compress: {
-                warnings: false
+                warnings: false,  
+                drop_console: true,  
+                collapse_vars: true,  
+                reduce_vars: true,  
+            },
+            output: {
+                beautify: false, 
+                comments: false, 
             }
         }
     }),
@@ -41,12 +52,18 @@ const pluginsConfigs =isDev?[]:[
     }),
 ]
 
+// 读取写好的 loading 态的 html 和 css
+const loading = {
+    html: fs.readFileSync(path.join(__dirname, '../src/loading.html'))
+}
+
+
 module.exports = {
     mode:isDev?'development':'production',
     devtool: isDev?'inline-source-map':false,
     entry:{
         main:[
-            'babel-polyfill',
+            // 'babel-polyfill',
             path.resolve(__dirname, '../src/main.js')
         ]
     },
@@ -132,6 +149,7 @@ module.exports = {
             // chunks: 'all',
             // chunksSortMode: 'manual',
             favicon:path.resolve(__dirname, '../favicon.ico'),
+            loading: loading
         }),
     ]
 }

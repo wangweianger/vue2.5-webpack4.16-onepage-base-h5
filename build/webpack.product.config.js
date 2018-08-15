@@ -2,7 +2,6 @@
 const webpack                   = require('webpack')
 const config                    = require('./webpack.base.config')
 const path                      = require("path");
-const CleanPlugin               = require('clean-webpack-plugin');
 const SpeedMeasurePlugin        = require("speed-measure-webpack-plugin")
 const smp                       = new SpeedMeasurePlugin()
 
@@ -42,35 +41,33 @@ config.module.rules=(config.module.rules || []).concat([
     }
 ])
 
-config.optimization={
-    splitChunks: {
-        chunks: "all",
-        cacheGroups: {
-            vendors: {
-                test: /[\\/]node_modules[\\/]/,
-                name: 'vendors',
-                priority: 10,
-                enforce: true,
-                chunks: "initial",
-            },
-            styles: {
-                name: 'styles',
-                test: /\.(scss|css)$/,
-                minChunks: 2,
-                priority: 20,
-                reuseExistingChunk: true,
-                enforce: true
-            }
-        }
-    },
-    runtimeChunk: {
-        name: 'manifest'
-    }
-}
+// config.optimization={
+//     splitChunks: {
+//         chunks: "all",
+//         cacheGroups: {
+//             vendors: {
+//                 test: /[\\/]node_modules[\\/]/,
+//                 name: 'vendors',
+//                 priority: 10,
+//                 enforce: true,
+//                 chunks: "initial",
+//             },
+//             styles: {
+//                 name: 'styles',
+//                 test: /\.(scss|css)$/,
+//                 minChunks: 2,
+//                 priority: 20,
+//                 reuseExistingChunk: true,
+//                 enforce: true
+//             }
+//         }
+//     },
+//     runtimeChunk: {
+//         name: 'manifest'
+//     }
+// }
 
 config.plugins = (config.plugins || []).concat([
-    new CleanPlugin(path.resolve(__dirname, '../dist/production')),
-
     // 增加DllReferencePlugin配置
     new webpack.DllReferencePlugin({
         context:path.join(__dirname, '../dist/production/libs'), 
