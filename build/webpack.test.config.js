@@ -5,6 +5,7 @@ const path                  	= require("path");
 const CleanPlugin           	= require('clean-webpack-plugin')
 const SpeedMeasurePlugin        = require("speed-measure-webpack-plugin")
 const smp                       = new SpeedMeasurePlugin()
+const CleanWebpackPlugin        = require('clean-webpack-plugin')
 
 
 config.output.path=path.resolve(__dirname, '../dist/test');
@@ -43,7 +44,11 @@ config.module.rules=(config.module.rules || []).concat([
 config.devtool = 'inline-source-map';
 
 config.plugins = (config.plugins || []).concat([
-  	new CleanPlugin(path.resolve(__dirname, '../dist/test')),
+    new CleanWebpackPlugin(['test/js'], {
+        root: path.resolve(__dirname, '../dist'),
+        verbose: true,
+        dry: false,
+    }),
 ])
 
 module.exports = smp.wrap(config)

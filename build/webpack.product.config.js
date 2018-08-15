@@ -4,6 +4,7 @@ const config                    = require('./webpack.base.config')
 const path                      = require("path");
 const SpeedMeasurePlugin        = require("speed-measure-webpack-plugin")
 const smp                       = new SpeedMeasurePlugin()
+const CleanWebpackPlugin        = require('clean-webpack-plugin')
 
 
 config.output.path=path.resolve(__dirname, '../dist/production');
@@ -68,6 +69,11 @@ config.module.rules=(config.module.rules || []).concat([
 // }
 
 config.plugins = (config.plugins || []).concat([
+    new CleanWebpackPlugin(['production/js'], {
+        root: path.resolve(__dirname, '../dist'),
+        verbose: true,
+        dry: false,
+    }),
     // 增加DllReferencePlugin配置
     new webpack.DllReferencePlugin({
         context:path.join(__dirname, '../dist/production/libs'), 

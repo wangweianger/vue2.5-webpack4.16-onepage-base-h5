@@ -12,7 +12,6 @@ const ParallelUglifyPlugin  = require('webpack-parallel-uglify-plugin')
 const ProgressBarPlugin     = require('progress-bar-webpack-plugin')
 const chalk                 = require('chalk')
 const isDev                 = !!(process.env.NODE_ENV != 'production')
-const CleanWebpackPlugin    = require('clean-webpack-plugin');
 
 // 多线程
 const HappyPack             = require('happypack');
@@ -21,11 +20,6 @@ const happyThreadPool       = HappyPack.ThreadPool({ size: os.cpus().length });
 
 // 生产环境使用
 const pluginsConfigs =isDev?[]:[
-    new CleanWebpackPlugin(['production/js'], {
-        root: path.resolve(__dirname, '../dist'),
-        verbose: true,
-        dry: false,
-    }),
     new MiniCssExtractPlugin({
         filename: 'css/[name].css',
         chunkFilename: 'css/[contenthash:12].css'
