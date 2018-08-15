@@ -71,17 +71,15 @@ module.exports = {
         rules:[
             {
                 test: /\.vue$/,
-                loader: 'vue-loader'
+                exclude:/node_modules/,
+                loader: 'vue-loader',
             },
             {
                 test: /\.js$/,
-                exclude: file => (/node_modules/.test(file) && !/\.vue\.js/.test(file)),
                 use:[{loader: 'babel-loader',options: { presets: [ 'env' ] }}],
-                // use: ['happypack/loader?id=js'],
             },
             {
                 test:/\.css$/, 
-                exclude:/node_modules/,
                 use:isDev?['vue-style-loader', 'css-loader']:[ MiniCssExtractPlugin.loader,'vue-style-loader', 'css-loader']
             },
             {
@@ -91,12 +89,10 @@ module.exports = {
             },
             {
                 test: /\.(png|jpg|gif)$/,
-                exclude:/node_modules/,
-                loader: 'url-loader?limit=8192&name=img/[name].[ext]?[hash]'
+                loader: 'url-loader?limit=8192&name=img/[name].[ext]?[hash]',
             },
             {
             　　 test: /\.(woff|woff2|eot|ttf|svg)(\?.*$|$)/,
-                exclude:/node_modules/,
             　　 loader: 'url-loader?importLoaders=1&limit=1000&name=fonts/[name].[ext]'
         　　 },
             {
@@ -122,18 +118,9 @@ module.exports = {
         },
     },
     plugins:[
-        // new HappyPack({
-        //     id: 'js',
-        //     threadPool: happyThreadPool,
-        //     loaders: [{
-        //         loader: 'babel-loader',
-        //         options: {
-        //             presets: [ 'env' ],
-        //         }
-        //     }],
-        // }),
-        ...pluginsConfigs,
         new VueLoaderPlugin(),
+        ...pluginsConfigs,
+        
         new HtmlWebpackPlugin({
             title:'首页',
             template:path.resolve(__dirname, '../src/index.html'),
