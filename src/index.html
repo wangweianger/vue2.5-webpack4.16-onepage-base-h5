@@ -16,3 +16,16 @@
 
 </body>
 </html>
+
+<script>
+	var i=-1
+	'101000000000'.split('').reduce((total, num)=>{
+		i++
+		if(i%3===0){
+			return total + num+','
+		}else{
+			return total + num	
+		}
+	})
+
+</script>
