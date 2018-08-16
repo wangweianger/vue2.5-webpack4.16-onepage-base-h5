@@ -13,11 +13,6 @@ const ProgressBarPlugin     = require('progress-bar-webpack-plugin')
 const chalk                 = require('chalk')
 const isDev                 = !!(process.env.NODE_ENV != 'production')
 
-// 多线程
-const HappyPack             = require('happypack');
-const os                    = require('os');
-const happyThreadPool       = HappyPack.ThreadPool({ size: os.cpus().length });
-
 // 生产环境使用
 const pluginsConfigs =isDev?[]:[
     new MiniCssExtractPlugin({
