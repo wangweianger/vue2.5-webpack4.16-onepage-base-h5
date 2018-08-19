@@ -11,9 +11,9 @@
 
 ## 构建说明
 >  * DllPlugin和DllReferencePlugin  		配置 优化构建速度
->  * happypack 							编译多线程
+>  * happypack 							          编译多线程
 >  * webpack-parallel-uglify-plugin  	编译优化支持es6语法
->  * vue-loader v15 					配置更简洁
+>  * vue-loader v15 					        配置更简洁
 
 ## 项目步骤
 
