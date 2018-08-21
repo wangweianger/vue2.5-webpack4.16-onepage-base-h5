@@ -4,7 +4,7 @@
   "description": "zane project",
   "main": "main.js",
   "scripts": {
-    "dev": "cross-env PROT=8000 NODE_ENV=development node build/webpack.dev.config.js",
+    "dev": "cross-env PROT=8010 NODE_ENV=development node build/webpack.dev.config.js",
     "test": "cross-env NODE_ENV=production webpack --progress --hide-modules --colors --config build/webpack.test.config.js",
     "test:dll": "cross-env BUILD_TYPE=test webpack --progress --config build/webpack.dll.config.js",
     "build": "cross-env NODE_ENV=production webpack --progress --colors --config build/webpack.product.config.js",
