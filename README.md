@@ -15,7 +15,7 @@
 >  * webpack-parallel-uglify-plugin  	编译优化支持es6语法
 >  * vue-loader v15 					        配置更简洁
 
-## 项目步骤
+## 项目步骤 
 
 1.安装node.js
 
