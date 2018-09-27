@@ -23,13 +23,10 @@ for (var k in filter) {
 // window.config 	= config;
 // window.popup 	= popup;
 
-/*---------- start 布局写入  ------------*/
-window == window.top && document.write('<div id="loading"></div>');
-/*---------- end 布局写入    ------------*/
 
 /*--------------------------------------------dom操作 相关 end -------------------------------------------------------*/
 
-window.router = new VueRouter({
+let router = new VueRouter({
 	mode: 'history',
 	routes: routes
 })
